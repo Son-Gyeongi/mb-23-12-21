@@ -1,4 +1,4 @@
-package com.ll.mb.domain.book.entity;
+package com.ll.mb.domain.product.cart.entity;
 
 import com.ll.mb.domain.member.member.entity.Member;
 import com.ll.mb.domain.product.product.entity.Product;
@@ -15,12 +15,9 @@ import lombok.*;
 @Setter
 @Getter
 @ToString(callSuper = true)
-public class Book extends BaseEntity {
+public class CartItem extends BaseEntity {
     @ManyToOne
-    private Member author;
-    @OneToOne // Book 하나에 상품 하나
-    private Product product; // null이면 상품화 되지 않았다.
-    private String title;
-    private String body;
-    private int price;
+    private Member member; // 장바구니의 주인
+    @OneToOne // 장바구니 하나에 상품 하나 - 똑같은 책 2개 사는 거 허용 안됨
+    private Product product; // 상품
 }

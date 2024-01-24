@@ -4,6 +4,8 @@ import com.ll.mb.domain.book.book.service.BookService;
 import com.ll.mb.domain.book.entity.Book;
 import com.ll.mb.domain.member.member.entity.Member;
 import com.ll.mb.domain.member.member.service.MemberService;
+import com.ll.mb.domain.product.cart.service.CartService;
+import com.ll.mb.domain.product.product.entity.Product;
 import com.ll.mb.domain.product.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,7 @@ public class NotProd {
     private final MemberService memberService;
     private final BookService bookService;
     private final ProductService productService;
+    private final CartService cartService;
 
     @Bean
     ApplicationRunner initNotProd() {
@@ -50,9 +53,14 @@ public class NotProd {
         Book book6 = bookService.createBook(memberUser3, "책 제목 6", "책 내용 6", 10000);
 
         // 상품화 (Book, Post 등 상품화 될 수 있다.)
-        productService.createProduct(book3); // 책 3번이 상품화 된거다.
-        productService.createProduct(book4);
-        productService.createProduct(book5);
-        productService.createProduct(book5); // 같은 상품을 두번 상품화 할 수 없다.
+        Product product1 = productService.createProduct(book3); // 책 3번이 상품화 된거다.
+        Product product2 = productService.createProduct(book4);
+        Product product3 = productService.createProduct(book5);
+        Product product4 = productService.createProduct(book5); // 같은 상품을 두번 상품화 할 수 없다.
+
+        // 장바구니 - book을 바로 장바구니에 담는게 아닌 상품을 담아야 한다.
+        cartService.addItem(memberUser1, product1); // memberUser1이 product1을 장바구니에 담았다.
+        cartService.addItem(memberUser1, product2);
+        cartService.addItem(memberUser1, product3);
     }
 }
