@@ -4,6 +4,7 @@ import com.ll.mb.domain.book.book.service.BookService;
 import com.ll.mb.domain.book.entity.Book;
 import com.ll.mb.domain.member.member.entity.Member;
 import com.ll.mb.domain.member.member.service.MemberService;
+import com.ll.mb.domain.product.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationRunner;
@@ -20,6 +21,7 @@ public class NotProd {
     private NotProd self;
     private final MemberService memberService;
     private final BookService bookService;
+    private final ProductService productService;
 
     @Bean
     ApplicationRunner initNotProd() {
@@ -46,5 +48,11 @@ public class NotProd {
         Book book4 = bookService.createBook(memberUser3, "책 제목 4", "책 내용 4", 10000);
         Book book5 = bookService.createBook(memberUser3, "책 제목 5", "책 내용 5", 10000);
         Book book6 = bookService.createBook(memberUser3, "책 제목 6", "책 내용 6", 10000);
+
+        // 상품화 (Book, Post 등 상품화 될 수 있다.)
+        productService.createProduct(book3); // 책 3번이 상품화 된거다.
+        productService.createProduct(book4);
+        productService.createProduct(book5);
+        productService.createProduct(book5); // 같은 상품을 두번 상품화 할 수 없다.
     }
 }

@@ -1,5 +1,6 @@
 package com.ll.mb.global.jpa;
 
+import com.ll.mb.standard.util.Ut;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -24,4 +25,8 @@ public class BaseEntity {
     private LocalDateTime createDate;
     @LastModifiedDate
     private LocalDateTime modifyDate;
+
+    public String getModelName() {
+        return Ut.str.lcfirst(this.getClass().getSimpleName()); // book의 ModelName은 Book => book으로 변환
+    }
 }

@@ -1,11 +1,9 @@
-package com.ll.mb.domain.book.entity;
+package com.ll.mb.domain.product.product.entity;
 
 import com.ll.mb.domain.member.member.entity.Member;
-import com.ll.mb.domain.product.product.entity.Product;
 import com.ll.mb.global.jpa.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import lombok.*;
 
 @Entity
@@ -15,12 +13,11 @@ import lombok.*;
 @Setter
 @Getter
 @ToString(callSuper = true)
-public class Book extends BaseEntity {
+public class Product extends BaseEntity {
     @ManyToOne
-    private Member author;
-    @OneToOne
-    private Product product; // null이면 상품화 되지 않았다.
-    private String title;
-    private String body;
+    private Member maker;
+    private String relTypeCode; // 상품 종류 book || post ...
+    private long relId; // 1 || 2 || 3 ...
+    private String name;
     private int price;
 }
