@@ -4,6 +4,10 @@ spring:
   profiles:
     active: dev
     include: secret
+  servlet:
+    multipart:
+      max-file-size: 50MB # 파일 업로드 최대 크기, 기본 설정 2MB
+      max-request-size: ${spring.servlet.multipart.max-file-size}
   threads:
     virtual:
       enabled: true

@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
@@ -28,7 +29,14 @@ public class MemberService {
 
     @Transactional
     public RsData<Member> join(String username, String password, String nickname) {
-        return join(username, password, nickname, null);
+        return join(username, password, nickname, "");
+    }
+
+    @Transactional
+    public RsData<Member> join(String username, String password, String nickname, MultipartFile profileImg) {
+        // 업로드된 MultipartFile을 일반 파일로 바꿔준다.
+        String profileImgFilePath = Ut.file.toFile(profileImg, AppConfig.getTempDirPath());
+        return join(username, password, nickname, profileImgFilePath);
     }
 
     @Transactional
@@ -55,6 +63,7 @@ public class MemberService {
     }
 
     private void saveProfileImg(Member member, String profileImgFilePath) {
+        // fileNo는 자동으로 증가한다.
         genFileService.save(member.getModelName(), member.getId(), "common", "profileImg", 1, profileImgFilePath);
     }
 
