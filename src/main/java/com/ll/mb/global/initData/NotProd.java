@@ -51,6 +51,7 @@ public class NotProd {
         Member memberUser1 = memberService.join("user1", "1234", "유저1").getData();
         Member memberUser2 = memberService.join("user2", "1234", "유저2").getData();
         Member memberUser3 = memberService.join("user3", "1234", "유저3").getData();
+        Member memberUser4 = memberService.join("user4", "1234", "유저4").getData();
 
         // Book 생성
         Book book1 = bookService.createBook(memberUser1, "책 제목 1", "책 내용 1", 10_000);
@@ -111,6 +112,16 @@ public class NotProd {
         // 토스 페이먼츠로 결제하는 기능 구현, 부족한 금액은 자동으로 예치금에서 차감하도록
         // 85_000원 결제 중에 토스페이먼츠로 55_000원으로 결제하겠다. 나머지 차액은 예치금에서 결제하면 된다.
         orderService.payByTossPayments(order3, 55_000);
+
+        // 주문 상세페이지는 구매자만 볼 수 있습니다.
+        // memberUser4 캐시(예치금) 충전
+        memberService.addCash(memberUser4, 50_000, CashLog.EventType.충전__무통장입금, memberUser4);
+        // 장바구니
+        cartService.addItem(memberUser4, product1); // memberUser4이 product1을 장바구니에 담았다.
+        cartService.addItem(memberUser4, product2);
+        cartService.addItem(memberUser4, product3);
+        // 주문
+        Order order4 = orderService.createFromCart(memberUser4);
     }
 
     @Transactional

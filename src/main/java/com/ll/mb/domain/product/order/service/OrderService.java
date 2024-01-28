@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -127,5 +128,14 @@ public class OrderService {
         // 내가 가지고 있는 캐시(restCash)와 토스페이먼츠를 합했을 때(pgPayPrice)
         // order.calcPayPrice 이 주문의 결제 가격보다 restCash + pgPayPrice 이게 크면 돈을 지불할 수 있다.
         return order.calcPayPrice() <= restCash + pgPayPrice;
+    }
+
+    public Optional<Order> findById(long id) {
+        return orderRepository.findById(id);
+    }
+
+    // 주문 상세페이지는 구매자만 볼 수 있습니다.
+    public boolean actorCanSee(Member actor, Order order) {
+        return order.getBuyer().equals(actor);
     }
 }
