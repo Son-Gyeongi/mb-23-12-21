@@ -14,4 +14,5 @@ import lombok.*;
 public class Member extends BaseEntity {
     private String username;
     private String password;
+    private long restCash; // 회원 캐시
 }

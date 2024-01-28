@@ -64,7 +64,12 @@ public class NotProd {
         cartService.addItem(memberUser1, product2);
         cartService.addItem(memberUser1, product3);
 
+        System.out.println("memberUser1.getRestCash() = " + memberUser1.getRestCash());
+
         // 캐시 사용에 대한 기록, 자세할수록 좋다.
         memberService.addCash(memberUser1, 100_000, CashLog.EventType.충전__무통장입금, memberUser1);
+        memberService.addCash(memberUser1, -20_000, CashLog.EventType.출금__통장입금, memberUser1);
+
+        System.out.println("memberUser1.getRestCash() = " + memberUser1.getRestCash());
     }
 }
