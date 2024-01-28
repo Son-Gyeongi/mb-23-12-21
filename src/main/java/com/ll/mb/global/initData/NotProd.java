@@ -31,6 +31,7 @@ public class NotProd {
     private final OrderService orderService;
 
     @Bean
+    @org.springframework.core.annotation.Order(3) // 우선순위를 초기 데이터 All보다 늦게 처리하기 위해서
     ApplicationRunner initNotProd() {
         return args -> {
             self.work1();

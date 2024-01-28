@@ -45,6 +45,10 @@ logging:
     org.hibernate.orm.jdbc.extract: TRACE
     org.springframework.transaction.interceptor: TRACE
 custom:
+  temp:
+    dirPath: c:/temp/mb/temp # 임시 다운로드 폴더
+  genFile:
+    dirPath: c:/temp/mb # 확장자, 이름 등이 정리된 폴더
   site:
     name: mb.oa.gg
     baseUrl: "http://localhost:${server.port}"
