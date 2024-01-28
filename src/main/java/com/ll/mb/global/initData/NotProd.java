@@ -105,6 +105,10 @@ public class NotProd {
         memberService.addCash(memberUser2, 150_000, CashLog.EventType.충전__무통장입금,memberUser2);
         Order order3 = orderService.createFromCart(memberUser2);
         orderService.checkCanPay(order3, 55_000); // 토스페이먼츠로 계산하는 금액 55,000원
+
+        // 토스 페이먼츠로 결제하는 기능 구현, 부족한 금액은 자동으로 예치금에서 차감하도록
+        // 85_000원 결제 중에 토스페이먼츠로 55_000원으로 결제하겠다. 나머지 차액은 예치금에서 결제하면 된다.
+        orderService.payByTossPayments(order3, 55_000);
     }
 
     @Transactional

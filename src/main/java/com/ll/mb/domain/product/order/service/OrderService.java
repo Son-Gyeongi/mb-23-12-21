@@ -59,6 +59,36 @@ public class OrderService {
         payDone(order);
     }
 
+    @Transactional
+    public void payByTossPayments(Order order, long pgPayPrice) {
+        // 이제 이거를 토스페이먼츠에 붙이면 된다.
+
+        Member buyer = order.getBuyer();
+        long restCash = buyer.getRestCash();
+        long payPrice = order.calcPayPrice();
+
+        // 토스페이먼츠 결제 후에 나머지 결제할 금액을 캐시에서 지불한다.
+        long userRestCash = payPrice - pgPayPrice;
+
+        // 먼저 토스페이먼츠에서 선금액 충전
+        memberService.addCash(buyer, pgPayPrice, CashLog.EventType.충전__토스페이먼츠, order);
+        // 사용
+        memberService.addCash(buyer, pgPayPrice * -1, CashLog.EventType.사용__토스페이먼츠_주문결제, order);
+
+        // 토스페이먼츠만으로 결제가 안될 때 추가 결제를 예치금으로 한다.
+        if (userRestCash > 0) {
+            if (userRestCash > restCash) {
+                throw new RuntimeException("예치금이 부족합니다.");
+                // @Transactional이 있어서 위에 토스페이먼츠 충전, 사용한 부분은 에러가 나면 롤백이 된다.
+                // 하나의 트랜잭션으로 묶인 작업은 에러가 나면 다 롤백이 된다.
+            }
+
+            memberService.addCash(buyer, userRestCash * -1, CashLog.EventType.사용__예치금_주문결제, order);
+        }
+
+        payDone(order);
+    }
+
     // 주문 완료 처리
     private void payDone(Order order) {
         order.setPaymentDone();
