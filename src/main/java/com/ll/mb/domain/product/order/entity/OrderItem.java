@@ -18,4 +18,8 @@ public class OrderItem extends BaseEntity { // 주문 아이템, 한번의 주�
     private Order order;
     @ManyToOne
     private Product product;
+
+    public long getPayPrice() {
+        return product.getPrice();
+    }
 }

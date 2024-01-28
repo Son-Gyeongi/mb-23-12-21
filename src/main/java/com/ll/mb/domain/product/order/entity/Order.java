@@ -6,6 +6,7 @@ import com.ll.mb.global.jpa.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,9 +26,9 @@ public class Order extends BaseEntity { // 주문 1개
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems = new ArrayList<>();
 
-    private boolean isPaid; // 결제 여부
-    private boolean isCanceled; // 취소 여부
-    private boolean isRefunded; // 환불 여부
+    private LocalDateTime payDate; // 결제일, null이면 결제하지 않은거다.
+    private LocalDateTime cancelDate; // 취소일
+    private LocalDateTime refundDate; // 환불일
 
     public void addItem(CartItem cartItem) {
         // CartItem로부터 OrderItem을 만들어서 Order에 넣는다.
@@ -37,5 +38,15 @@ public class Order extends BaseEntity { // 주문 1개
                 .build();
 
         orderItems.add(orderItem);
+    }
+
+    public long calcPayPrice() {
+        return orderItems.stream()
+                .mapToLong(OrderItem::getPayPrice)
+                .sum();
+    }
+
+    public void setPaymentDone() {
+        payDate = LocalDateTime.now();
     }
 }
