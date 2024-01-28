@@ -1,8 +1,15 @@
 package com.ll.mb.domain.member.member.entity;
 
+import com.ll.mb.domain.book.entity.Book;
+import com.ll.mb.domain.member.myBook.entity.MyBook;
 import com.ll.mb.global.jpa.BaseEntity;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Builder
@@ -15,4 +22,21 @@ public class Member extends BaseEntity {
     private String username;
     private String password;
     private long restCash; // 회원 캐시
+
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<MyBook> myBooks = new ArrayList<>();
+
+    public void addMyBook(Book book) {
+        MyBook myBook = MyBook.builder()
+                .owner(this)
+                .book(book)
+                .build();
+
+        myBooks.add(myBook);
+    }
+
+    public void removeMyBook(Book book) {
+        myBooks.removeIf(myBook -> myBook.getBook().equals(book));
+    }
 }
