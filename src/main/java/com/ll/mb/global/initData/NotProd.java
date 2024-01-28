@@ -31,7 +31,8 @@ public class NotProd {
     private final OrderService orderService;
 
     @Bean
-    @org.springframework.core.annotation.Order(3) // 우선순위를 초기 데이터 All보다 늦게 처리하기 위해서
+    @org.springframework.core.annotation.Order(3)
+        // 우선순위를 초기 데이터 All보다 늦게 처리하기 위해서
     ApplicationRunner initNotProd() {
         return args -> {
             self.work1();
@@ -90,7 +91,7 @@ public class NotProd {
 
         // 2번 주문을 결제처리 후 환불처리
         // 회원 3번에 충전을 하고
-        memberService.addCash(memberUser3,150_000, CashLog.EventType.충전__무통장입금, memberUser3);
+        memberService.addCash(memberUser3, 150_000, CashLog.EventType.충전__무통장입금, memberUser3);
         // 회원 3번이 주문을 한다.
         Order order2 = orderService.createFromCart(memberUser3);
         // 주문을 가지고 결제
@@ -103,7 +104,7 @@ public class NotProd {
         orderService.checkPayPrice(order3, 85_000); // 주문금액(85,000원), 주문과 금액이 일치하지 않으면 예외발생하는 함수*/
 
         // 단순히 checkPayPrice() 하는거 보다는 아래 처럼 해야 한다.
-        memberService.addCash(memberUser2, 150_000, CashLog.EventType.충전__무통장입금,memberUser2);
+        memberService.addCash(memberUser2, 150_000, CashLog.EventType.충전__무통장입금, memberUser2);
         Order order3 = orderService.createFromCart(memberUser2);
         orderService.checkCanPay(order3, 55_000); // 토스페이먼츠로 계산하는 금액 55,000원
 

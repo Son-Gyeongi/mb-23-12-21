@@ -33,11 +33,15 @@ public class AppConfig {
     private static String tempDirPath;
 
     @Value("${custom.temp.dirPath}")
-    public void setTempDirPath(String tempDirPath) { this.tempDirPath = tempDirPath; }
+    public void setTempDirPath(String tempDirPath) {
+        this.tempDirPath = tempDirPath;
+    }
 
     @Getter
     private static String genFileDirPath;
 
     @Value("${custom.genFile.dirPath}")
-    public void setGenFileDirPath(String genFileDirPath) { this.genFileDirPath = genFileDirPath; }
+    public void setGenFileDirPath(String genFileDirPath) {
+        this.genFileDirPath = genFileDirPath;
+    }
 }

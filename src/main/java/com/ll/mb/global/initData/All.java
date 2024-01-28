@@ -20,7 +20,8 @@ public class All {
     private All self;
 
     @Bean
-    @Order(2) // init 데이터 우선순위로 먼저 실행하기 위해서, 모든게 세팅이 된 다음에 실행되기를 바라서 순서를 1이 아닌 2부터 시작했다.
+    @Order(2)
+        // init 데이터 우선순위로 먼저 실행하기 위해서, 모든게 세팅이 된 다음에 실행되기를 바라서 순서를 1이 아닌 2부터 시작했다.
     ApplicationRunner initAll() {
         return args -> {
             self.work1();

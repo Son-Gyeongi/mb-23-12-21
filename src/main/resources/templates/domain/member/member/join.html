@@ -52,7 +52,7 @@
         }
     </script>
 
-<!--    기본적으로 파일 업로드는 POST가 되어야 한다. enctype="multipart/form-data"를 추가해야지 파일 업로드가 된다.-->
+    <!--    기본적으로 파일 업로드는 POST가 되어야 한다. enctype="multipart/form-data"를 추가해야지 파일 업로드가 된다.-->
     <form th:action method="POST" enctype="multipart/form-data" onsubmit="submitJoinForm(this); return false;">
         <div>
             <label>사용자 ID</label>
@@ -76,7 +76,8 @@
 
         <div>
             <label>프로필 이미지</label>
-            <input type="file" name="profileImg" class="file-input file-input-bordered" accept="image/jpeg, image/png, image/gif">
+            <input type="file" name="profileImg" class="file-input file-input-bordered"
+                   accept="image/jpeg, image/png, image/gif">
         </div>
 
         <button type="submit" class="btn btn-primary">회원가입</button>
