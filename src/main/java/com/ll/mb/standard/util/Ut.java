@@ -16,10 +16,23 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 
 public class Ut {
+    // date 유틸리티
+    public static class date {
+        private date() {
+        }
+
+        public static String getCurrentDateFormatted(String pattern) {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+            return simpleDateFormat.format(new Date());
+        }
+    }
+
     // file 유틸리티
     public static class file {
         private file() {
