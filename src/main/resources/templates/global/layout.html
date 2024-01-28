@@ -21,6 +21,10 @@
 </head>
 <body>
 
+<div th:if="${@rq.login}">
+    <span th:text="${@rq.member.nickname}"></span>님 환영합니다.
+</div>
+
 <th:block layout:fragment="header"></th:block>
 
 <th:block layout:fragment="content"></th:block>

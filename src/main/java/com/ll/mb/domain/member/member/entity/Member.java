@@ -26,6 +26,7 @@ import java.util.List;
 public class Member extends BaseEntity {
     private String username;
     private String password;
+    private String nickname;
     private long restCash; // 회원 캐시
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)

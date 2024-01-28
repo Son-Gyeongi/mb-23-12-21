@@ -45,10 +45,10 @@ public class NotProd {
         if (memberService.findByUsername("admin").isPresent()) return;
 
         // 회원 생성
-        Member memberAdmin = memberService.join("admin", "1234").getData();
-        Member memberUser1 = memberService.join("user1", "1234").getData();
-        Member memberUser2 = memberService.join("user2", "1234").getData();
-        Member memberUser3 = memberService.join("user3", "1234").getData();
+        Member memberAdmin = memberService.join("admin", "1234", "관리자").getData();
+        Member memberUser1 = memberService.join("user1", "1234", "유저1").getData();
+        Member memberUser2 = memberService.join("user2", "1234", "유저2").getData();
+        Member memberUser3 = memberService.join("user3", "1234", "유저3").getData();
 
         // Book 생성
         Book book1 = bookService.createBook(memberUser1, "책 제목 1", "책 내용 1", 10_000);
