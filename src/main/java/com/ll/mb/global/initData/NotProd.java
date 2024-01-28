@@ -97,9 +97,14 @@ public class NotProd {
         // 환불
         orderService.refund(order2);
 
-        // memberUser2가 장바구니에 있는 걸 다 주문한다.
+        /*// memberUser2가 장바구니에 있는 걸 다 주문한다.
         Order order3 = orderService.createFromCart(memberUser2);
-        orderService.checkPayPrice(order3, 85_000); // 주문금액(85,000원), 주문과 금액이 일치하지 않으면 예외발생하는 함수
+        orderService.checkPayPrice(order3, 85_000); // 주문금액(85,000원), 주문과 금액이 일치하지 않으면 예외발생하는 함수*/
+
+        // 단순히 checkPayPrice() 하는거 보다는 아래 처럼 해야 한다.
+        memberService.addCash(memberUser2, 150_000, CashLog.EventType.충전__무통장입금,memberUser2);
+        Order order3 = orderService.createFromCart(memberUser2);
+        orderService.checkCanPay(order3, 55_000); // 토스페이먼츠로 계산하는 금액 55,000원
     }
 
     @Transactional

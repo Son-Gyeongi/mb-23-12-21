@@ -84,4 +84,18 @@ public class OrderService {
 
         return true;
     }
+
+    // 돈을 지불할 수 있는지 체크하겠다.
+    public void checkCanPay(Order order, long pgPayPrice) {
+        if (!canPay(order, pgPayPrice))
+            throw new GlobalException("400-2", "PG결제 금액 혹은 예치금이 부족하여 결제할 수 없습니다.");
+    }
+
+    public boolean canPay(Order order, long pgPayPrice) { // pgPayPrice : 토스페이먼츠로 결제되는 금액. pg(paygate)
+        long restCash = order.getBuyer().getRestCash();
+
+        // 내가 가지고 있는 캐시(restCash)와 토스페이먼츠를 합했을 때(pgPayPrice)
+        // order.calcPayPrice 이 주문의 결제 가격보다 restCash + pgPayPrice 이게 크면 돈을 지불할 수 있다.
+        return order.calcPayPrice() <= restCash + pgPayPrice;
+    }
 }
