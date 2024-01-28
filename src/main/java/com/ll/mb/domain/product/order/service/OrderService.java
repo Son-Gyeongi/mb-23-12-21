@@ -76,4 +76,12 @@ public class OrderService {
         order.setCancelDone();
         order.setRefundDone();
     }
+
+    public boolean checkPayPrice(Order order, int payPrice) {
+        if (order.calcPayPrice() != payPrice) {
+            throw new GlobalException("400-2", "결제금액이 일치하지 않습니다.");
+        }
+
+        return true;
+    }
 }

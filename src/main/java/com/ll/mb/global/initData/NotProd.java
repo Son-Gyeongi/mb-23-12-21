@@ -85,7 +85,7 @@ public class NotProd {
         // 캐시만으로 1번 주문 결제처리
         Order order1 = orderService.createFromCart(memberUser1);
         long order1PayPrice = order1.calcPayPrice();
-        orderService.payByCashOnly(order1);
+        orderService.payByCashOnly(order1); // 85,000원
 
         // 2번 주문을 결제처리 후 환불처리
         // 회원 3번에 충전을 하고
@@ -93,9 +93,13 @@ public class NotProd {
         // 회원 3번이 주문을 한다.
         Order order2 = orderService.createFromCart(memberUser3);
         // 주문을 가지고 결제
-        orderService.payByCashOnly(order2);
+        orderService.payByCashOnly(order2); // 85,000원
         // 환불
         orderService.refund(order2);
+
+        // memberUser2가 장바구니에 있는 걸 다 주문한다.
+        Order order3 = orderService.createFromCart(memberUser2);
+        orderService.checkPayPrice(order3, 85_000); // 주문금액(85,000원), 주문과 금액이 일치하지 않으면 예외발생하는 함수
     }
 
     @Transactional
