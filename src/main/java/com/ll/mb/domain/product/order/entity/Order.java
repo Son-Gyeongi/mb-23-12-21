@@ -49,4 +49,12 @@ public class Order extends BaseEntity { // 주문 1개
     public void setPaymentDone() {
         payDate = LocalDateTime.now();
     }
+
+    public void setCancelDone() {
+        cancelDate = LocalDateTime.now();
+    }
+
+    public void setRefundDone() {
+        refundDate = LocalDateTime.now();
+    }
 }

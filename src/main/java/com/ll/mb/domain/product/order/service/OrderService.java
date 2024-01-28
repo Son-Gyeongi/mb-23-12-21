@@ -41,6 +41,7 @@ public class OrderService {
         return order;
     }
 
+    @Transactional // 서비스 안에서 Select 외에 다른거를 한다면 붙여주기
     public void payByCashOnly(Order order) {
         Member buyer = order.getBuyer();
         long restCash = buyer.getRestCash();
@@ -58,5 +59,18 @@ public class OrderService {
     // 주문 완료 처리
     private void payDone(Order order) {
         order.setPaymentDone();
+    }
+
+    // 환불
+    @Transactional
+    public void refund(Order order) {
+        long payPrice = order.calcPayPrice();
+
+        // 돈 환불
+        memberService.addCash(order.getBuyer(), payPrice, CashLog.EventType.환불__예치금_주문결제, order);
+
+        // 환불 완료 - 주문 취소 날짜, 환불 날짜
+        order.setCancelDone();
+        order.setRefundDone();
     }
 }

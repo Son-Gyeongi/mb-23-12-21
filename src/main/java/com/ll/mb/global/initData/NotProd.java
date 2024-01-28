@@ -67,15 +67,32 @@ public class NotProd {
         cartService.addItem(memberUser1, product2);
         cartService.addItem(memberUser1, product3);
 
+        cartService.addItem(memberUser2, product1); // memberUser2이 product1을 장바구니에 담았다.
+        cartService.addItem(memberUser2, product2);
+        cartService.addItem(memberUser2, product3);
+
+        cartService.addItem(memberUser3, product1); // memberUser3이 product1을 장바구니에 담았다.
+        cartService.addItem(memberUser3, product2);
+        cartService.addItem(memberUser3, product3);
+
         // 캐시 사용에 대한 기록, 자세할수록 좋다.
         memberService.addCash(memberUser1, 150_000, CashLog.EventType.충전__무통장입금, memberUser1);
         memberService.addCash(memberUser1, -20_000, CashLog.EventType.출금__통장입금, memberUser1);
 
         // 주문 - 장바구니 아이템들을 기반으로 주문을 생성 / 주문을 하면 장바구니는 비워지고 주문 1개가 생긴다.
+        // 캐시만으로 1번 주문 결제처리
         Order order1 = orderService.createFromCart(memberUser1);
-
         long order1PayPrice = order1.calcPayPrice();
-
         orderService.payByCashOnly(order1);
+
+        // 2번 주문을 결제처리 후 환불처리
+        // 회원 3번에 충전을 하고
+        memberService.addCash(memberUser3,150_000, CashLog.EventType.충전__무통장입금, memberUser3);
+        // 회원 3번이 주문을 한다.
+        Order order2 = orderService.createFromCart(memberUser3);
+        // 주문을 가지고 결제
+        orderService.payByCashOnly(order2);
+        // 환불
+        orderService.refund(order2);
     }
 }
