@@ -4,8 +4,10 @@ import com.ll.mb.domain.cash.cash.entity.CashLog;
 import com.ll.mb.domain.cash.cash.service.CashService;
 import com.ll.mb.domain.member.member.entity.Member;
 import com.ll.mb.domain.member.member.repository.MemberRepository;
+import com.ll.mb.global.app.AppConfig;
 import com.ll.mb.global.jpa.BaseEntity;
 import com.ll.mb.global.rsData.RsData;
+import com.ll.mb.standard.util.Ut;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -59,6 +61,9 @@ public class MemberService {
 
         // 이미 있는 소셜로그인인 경우 기존 회원을 리턴
         if (opMember.isPresent()) return RsData.of("200", "이미 존재합니다.", opMember.get());
+
+        String filePath = Ut.str.hasLength(profileImgUrl) ?
+                Ut.file.downloadFileByHttp(profileImgUrl, AppConfig.getTempDirPath()) : "";
 
         // 소셜로그인으로 첫번째 가입일 때 가입을 한다.
         return join(username, "", nickname);
