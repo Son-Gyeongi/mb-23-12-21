@@ -2,6 +2,7 @@ package com.ll.mb.global.initData;
 
 import com.ll.mb.domain.book.book.service.BookService;
 import com.ll.mb.domain.book.entity.Book;
+import com.ll.mb.domain.cash.cash.entity.CashLog;
 import com.ll.mb.domain.member.member.entity.Member;
 import com.ll.mb.domain.member.member.service.MemberService;
 import com.ll.mb.domain.product.cart.service.CartService;
@@ -45,12 +46,12 @@ public class NotProd {
         Member memberUser3 = memberService.join("user3", "1234").getData();
 
         // Book 생성
-        Book book1 = bookService.createBook(memberUser1, "책 제목 1", "책 내용 1", 10000);
-        Book book2 = bookService.createBook(memberUser2, "책 제목 2", "책 내용 2", 10000);
-        Book book3 = bookService.createBook(memberUser2, "책 제목 3", "책 내용 3", 10000);
-        Book book4 = bookService.createBook(memberUser3, "책 제목 4", "책 내용 4", 10000);
-        Book book5 = bookService.createBook(memberUser3, "책 제목 5", "책 내용 5", 10000);
-        Book book6 = bookService.createBook(memberUser3, "책 제목 6", "책 내용 6", 10000);
+        Book book1 = bookService.createBook(memberUser1, "책 제목 1", "책 내용 1", 10_000);
+        Book book2 = bookService.createBook(memberUser2, "책 제목 2", "책 내용 2", 20_000);
+        Book book3 = bookService.createBook(memberUser2, "책 제목 3", "책 내용 3", 30_000);
+        Book book4 = bookService.createBook(memberUser3, "책 제목 4", "책 내용 4", 40_000);
+        Book book5 = bookService.createBook(memberUser3, "책 제목 5", "책 내용 5", 15_000);
+        Book book6 = bookService.createBook(memberUser3, "책 제목 6", "책 내용 6", 20_000);
 
         // 상품화 (Book, Post 등 상품화 될 수 있다.)
         Product product1 = productService.createProduct(book3); // 책 3번이 상품화 된거다.
@@ -62,5 +63,8 @@ public class NotProd {
         cartService.addItem(memberUser1, product1); // memberUser1이 product1을 장바구니에 담았다.
         cartService.addItem(memberUser1, product2);
         cartService.addItem(memberUser1, product3);
+
+        // 캐시 사용에 대한 기록, 자세할수록 좋다.
+        memberService.addCash(memberUser1, 100_000, CashLog.EventType.충전__무통장입금, memberUser1);
     }
 }
