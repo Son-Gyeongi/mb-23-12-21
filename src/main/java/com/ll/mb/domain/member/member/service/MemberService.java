@@ -23,6 +23,10 @@ public class MemberService {
 
     @Transactional
     public RsData<Member> join(String username, String password) {
+        if (findByUsername(username).isPresent()) {
+            return RsData.of("400-2", "이미 존재하는 회원입니다.");
+        }
+
         Member member = Member.builder()
                 .username(username)
                 .password(passwordEncoder.encode(password))
@@ -30,7 +34,9 @@ public class MemberService {
 
         memberRepository.save(member);
 
-        return RsData.of("200", "회원가입 성공", member);
+        return RsData.of("200",
+                "%s님 환영합니다. 회원가입이 완료되었습니다. 로그인 후 이용해주세요.".formatted(member.getUsername())
+                , member);
     }
 
     public Optional<Member> findByUsername(String username) {

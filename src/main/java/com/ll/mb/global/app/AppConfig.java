@@ -4,12 +4,21 @@ import jakarta.persistence.EntityManager;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @RequiredArgsConstructor
 public class AppConfig {
     // AppConfig 클래스는 Spring의 설정을 담당하는 클래스
+
+    @Getter
+    private static String siteName;
+
+    @Value("${custom.site.name}")
+    public void setSiteName(String siteName) {
+        this.siteName = siteName;
+    }
 
     @Getter // @Getter 어노테이션은 Lombok 라이브러리를 사용하여 해당 필드의 getter 메서드를 자동으로 생성
     private static EntityManager entityManager;
