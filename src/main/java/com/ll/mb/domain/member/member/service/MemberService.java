@@ -1,5 +1,6 @@
 package com.ll.mb.domain.member.member.service;
 
+import com.ll.mb.domain.base.genFile.entity.GenFile;
 import com.ll.mb.domain.base.genFile.service.GenFileService;
 import com.ll.mb.domain.cash.cash.entity.CashLog;
 import com.ll.mb.domain.cash.cash.service.CashService;
@@ -82,5 +83,19 @@ public class MemberService {
 
         // 소셜로그인으로 첫번째 가입일 때 가입을 한다.
         return join(username, "", nickname, filePath);
+    }
+
+    public String getProfileImgUrl(Member member) {
+        // member가 null이 아니면 이미지 가져온다.
+        return Optional.ofNullable(member)
+                .flatMap(this::findProfileImgUrl)
+                .orElse("https://placehold.co/30x30?text=UU");
+    }
+
+    private Optional<String> findProfileImgUrl(Member member) {
+        return genFileService.findBy(
+                        member.getModelName(), member.getId(), "common", "profileImg", 1
+                )
+                .map(GenFile::getUrl);
     }
 }

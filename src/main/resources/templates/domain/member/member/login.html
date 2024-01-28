@@ -34,17 +34,17 @@
     <form th:action method="POST" onsubmit="submitLoginForm(this); return false;">
         <div>
             <label>사용자 ID</label>
-            <input type="text" name="username">
+            <input type="text" name="username" class="input input-bordered">
         </div>
 
         <div>
             <label>비밀번호</label>
-            <input type="password" name="password">
+            <input type="password" name="password" class="input input-bordered">
         </div>
 
-        <button type="submit">로그인</button>
+        <button class="btn btn-primary" type="submit">로그인</button>
 
-        <a href="/oauth2/authorization/kakao">
+        <a class="btn btn-primary" href="/oauth2/authorization/kakao">
             카카오 로그인
         </a>
     </form>
