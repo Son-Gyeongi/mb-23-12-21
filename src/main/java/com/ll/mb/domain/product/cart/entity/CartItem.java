@@ -15,9 +15,9 @@ import lombok.*;
 @Setter
 @Getter
 @ToString(callSuper = true)
-public class CartItem extends BaseEntity {
+public class CartItem extends BaseEntity { // 장바구니
     @ManyToOne
-    private Member member; // 장바구니의 주인
+    private Member buyer; // 장바구니의 주인
     @OneToOne // 장바구니 하나에 상품 하나 - 똑같은 책 2개 사는 거 허용 안됨
     private Product product; // 상품
 }

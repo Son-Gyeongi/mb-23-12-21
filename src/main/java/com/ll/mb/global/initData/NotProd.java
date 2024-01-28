@@ -6,6 +6,7 @@ import com.ll.mb.domain.cash.cash.entity.CashLog;
 import com.ll.mb.domain.member.member.entity.Member;
 import com.ll.mb.domain.member.member.service.MemberService;
 import com.ll.mb.domain.product.cart.service.CartService;
+import com.ll.mb.domain.product.order.service.OrderService;
 import com.ll.mb.domain.product.product.entity.Product;
 import com.ll.mb.domain.product.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ public class NotProd {
     private final BookService bookService;
     private final ProductService productService;
     private final CartService cartService;
+    private final OrderService orderService;
 
     @Bean
     ApplicationRunner initNotProd() {
@@ -64,12 +66,11 @@ public class NotProd {
         cartService.addItem(memberUser1, product2);
         cartService.addItem(memberUser1, product3);
 
-        System.out.println("memberUser1.getRestCash() = " + memberUser1.getRestCash());
-
         // 캐시 사용에 대한 기록, 자세할수록 좋다.
         memberService.addCash(memberUser1, 100_000, CashLog.EventType.충전__무통장입금, memberUser1);
         memberService.addCash(memberUser1, -20_000, CashLog.EventType.출금__통장입금, memberUser1);
 
-        System.out.println("memberUser1.getRestCash() = " + memberUser1.getRestCash());
+        // 주문 - 장바구니 아이템들을 기반으로 주문을 생성 / 주문을 하면 장바구니는 비워지고 주문 1개가 생긴다.
+        orderService.createFromCart(memberUser1);
     }
 }

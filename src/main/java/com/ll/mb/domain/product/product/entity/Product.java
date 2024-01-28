@@ -13,7 +13,7 @@ import lombok.*;
 @Setter
 @Getter
 @ToString(callSuper = true)
-public class Product extends BaseEntity {
+public class Product extends BaseEntity { // 상품화
     @ManyToOne
     private Member maker;
     private String relTypeCode; // 상품 종류 book || post ...
