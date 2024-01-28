@@ -24,6 +24,7 @@ public class Product extends BaseEntity { // 상품화
     private int price;
 
     // Product에서 relId를 기준으로 Book 엔티티를 얻을 수 있다.
+    // 이 메서드는 관련된 도서 엔티티를 반환하는데, 필요한 경우에만 실제로 데이터를 가져오도록 Lazy Loading을 사용
     public Book getBook() {
         // getBook() 메서드는 상품의 관련 도서(Book) 엔티티를 반환
         // AppConfig.getEntityManager()를 통해 EntityManager를 가져옵니다. 이는 JPA를 사용하여 데이터베이스와 상호 작용할 수 있는 인스턴스

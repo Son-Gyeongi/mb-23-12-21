@@ -2,6 +2,7 @@ package com.ll.mb.domain.product.order.entity;
 
 import com.ll.mb.domain.member.member.entity.Member;
 import com.ll.mb.domain.product.cart.entity.CartItem;
+import com.ll.mb.global.exception.GlobalException;
 import com.ll.mb.global.jpa.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -31,6 +32,10 @@ public class Order extends BaseEntity { // 주문 1개
     private LocalDateTime refundDate; // 환불일
 
     public void addItem(CartItem cartItem) {
+        // 주문 상품 추가할 때 상품을 구매한 적이 있는지 확인
+        if (buyer.has(cartItem.getProduct()))
+            throw new GlobalException("400-1", "이미 구매한 상품입니다.");
+
         // CartItem로부터 OrderItem을 만들어서 Order에 넣는다.
         OrderItem orderItem = OrderItem.builder()
                 .order(this)

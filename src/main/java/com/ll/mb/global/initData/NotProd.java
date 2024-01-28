@@ -34,6 +34,8 @@ public class NotProd {
     ApplicationRunner initNotProd() {
         return args -> {
             self.work1();
+            self.work2();
+            // work1, work2 로 트랜잭션을 나눠나서 work1은 성공하고 work2는 실패한다.
         };
     }
 
@@ -95,4 +97,15 @@ public class NotProd {
         // 환불
         orderService.refund(order2);
     }
+
+    @Transactional
+    public void work2() {
+        // 똑같은 상품을 장바구니에 담을 경우 에러 확인용 테스트
+//        Member memberUser1 = memberService.findByUsername("user1").get();
+//        Product product1 = productService.findById(1L).get();
+//
+//        // 장바구니 담기에서 "400-1: 이미 구매한 상품입니다." 오류가 나야한다.
+//        cartService.addItem(memberUser1, product1);
+    }
 }
+

@@ -7,6 +7,7 @@ import com.ll.mb.domain.product.cart.entity.CartItem;
 import com.ll.mb.domain.product.cart.service.CartService;
 import com.ll.mb.domain.product.order.entity.Order;
 import com.ll.mb.domain.product.order.repository.OrderRepository;
+import com.ll.mb.global.exception.GlobalException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,7 +49,9 @@ public class OrderService {
         long payPrice = order.calcPayPrice();
 
         if (payPrice > restCash) {
-            throw new RuntimeException("예치금이 부족합니다.");
+            // RuntimeException을 해도 되지만
+            //조금 더 체계적으로 관리하려면 GlobalException 클래스를 만들어서 사용하는 게 좋다.
+            throw new GlobalException("400-1", "예치금이 부족합니다.");
         }
 
         memberService.addCash(buyer, payPrice * -1, CashLog.EventType.사용__예치금_주문결제, order);
