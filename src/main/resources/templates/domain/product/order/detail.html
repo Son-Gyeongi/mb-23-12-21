@@ -2,12 +2,83 @@
 
 <head>
     <title>주문 [[${order.id}]]번</title>
+
+    <script src="https://js.tosspayments.com/v1/payment-widget"></script>
+
+    <script th:inline="javascript">
+        // orderId는 6자 이상이어야 한다.
+        const orderId = /*[[ ${order.id} ]]*/ null;
+        //  buyerName 실명을 적어야 한다.
+        const buyerName = "홍길동";
+        const buyerUsername = /*[[ ${order.buyer.username} ]]*/ null;
+        const orderName = "책 N권";
+        const actorRestCash = /*[[ ${actorRestCash} ]]*/ null;
+        const orderPayPrice = /*[[ ${order.calcPayPrice} ]]*/ null;
+        const toss_clientKey = /*[[ ${@environment.getProperty('custom.tossPayments.widget.clientKey')} ]]*/ null;
+    </script>
+
 </head>
 
 <body>
 
 <div layout:fragment="content">
-    상세내용
+    <!-- 결제 UI -->
+    <div id="payment-method"></div>
+
+    <!-- 이용약관 UI -->
+    <div id="agreement"></div>
+
+    <!-- 결제하기 버튼 -->
+    <div class="result wrapper">
+        <button class="button" id="payment-button" style="margin-top: 30px">
+            결제하기
+        </button>
+    </div>
+
+    <script>
+        const button = document.getElementById("payment-button");
+        const coupon = document.getElementById("coupon-box");
+        const generateRandomString = () =>
+            window.btoa(Math.random()).slice(0, 20);
+
+        var amount = orderPayPrice; // amount 결제금액
+
+        const clientKey = toss_clientKey;
+        const customerKey = buyerUsername;
+        const paymentWidget = PaymentWidget(clientKey, customerKey); // 회원 결제
+        // const paymentWidget = PaymentWidget(clientKey, PaymentWidget.ANONYMOUS); // 비회원 결제
+
+        // ------  결제 UI 렌더링 ------
+        // @docs https://docs.tosspayments.com/reference/widget-sdk#renderpaymentmethods선택자-결제-금액-옵션
+        paymentMethodWidget = paymentWidget.renderPaymentMethods(
+            "#payment-method",
+            {value: amount},
+            // 렌더링하고 싶은 결제 UI의 variantKey
+            // 결제 수단 및 스타일이 다른 멀티 UI를 직접 만들고 싶다면 계약이 필요해요.
+            // @docs https://docs.tosspayments.com/guides/payment-widget/admin#멀티-결제-ui
+            {variantKey: "DEFAULT"}
+        );
+        // ------  이용약관 UI 렌더링 ------
+        // @docs https://docs.tosspayments.com/reference/widget-sdk#renderagreement선택자-옵션
+        paymentWidget.renderAgreement("#agreement", {variantKey: "AGREEMENT"});
+
+        // ------  '결제하기' 버튼 누르면 결제창 띄우기 ------
+        // @docs https://docs.tosspayments.com/reference/widget-sdk#renderagreement결제-정보
+        button.addEventListener("click", function () {
+            // 결제를 요청하기 전에 orderId, amount를 서버에 저장하세요.
+            // 결제 과정에서 악의적으로 결제 금액이 바뀌는 것을 확인하는 용도입니다.
+            paymentWidget.requestPayment({
+                orderId: "2024-01-29__" + orderId,
+                orderName: orderName,
+                // window.location.origin : 현재 url, 전체 URL 주소를 써야한다.
+                successUrl: window.location.origin + "/order/success",
+                failUrl: window.location.origin + "/order/fail",
+                customerEmail: "customer123@gmail.com",
+                customerName: "김토스",
+                customerMobilePhone: "01012341234",
+            });
+        });
+    </script>
 </div>
 
 </body>

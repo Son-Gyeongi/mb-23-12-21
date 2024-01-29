@@ -56,3 +56,7 @@ custom:
   site:
     name: mb.oa.gg
     baseUrl: "http://localhost:${server.port}"
+  tossPayments:
+    widget:
+      clientKey: test_ck_0RnYX2w532wDqZARKgegVNeyqApQ
+      secretKey: ON_SECRET
