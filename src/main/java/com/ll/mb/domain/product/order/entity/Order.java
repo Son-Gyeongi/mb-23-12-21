@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,5 +68,25 @@ public class Order extends BaseEntity { // 주문 1개
         refundDate = LocalDateTime.now();
 
         orderItems.stream().forEach(OrderItem::setRefundDone);
+    }
+
+    // 상품 주문 요약 - 책 제목 3 외 2 건
+    public String getName() {
+        String name = orderItems.get(0).getProduct().getName();
+
+        if (orderItems.size() > 1) {
+            name += " 외 %d건".formatted(orderItems.size() - 1);
+        }
+
+        return name;
+    }
+
+    // 주문 번호
+    public String getCode() {
+        // yyyy-MM-dd 형식의 DateTimeFormatter 생성
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        // LocalDateTime 객체를 문자열로 변환
+        return getCreateDate().format(formatter) + "__" + getId();
     }
 }
