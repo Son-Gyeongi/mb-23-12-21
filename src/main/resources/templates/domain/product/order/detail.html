@@ -124,7 +124,9 @@
             form.useCash.value = form.useCash.value.trim();
 
             // valueAsNumber : 자바의 parseInt 하는 거랑 같다, 문자를 숫자로 바꾼다.
-            const useCash = form.useCash.valueAsNumber;
+            // 올바른 값이 들어오면 form.useCash.valueAsNumber, 올바르지 않은 값(NaN)이 들어오면 0이 쓰인다.
+            const useCash = form.useCash.valueAsNumber || 0; // 캐시(예치금)
+            // const useCash = form.useCash.valueAsNumber || 0; // || 비슷한 표현으로 ?? 도 있다.
 
             // 예치금 사용한다고 토스페이먼츠에게 알려준다. 총 결제 금액 - 캐시
             paymentMethodWidget.updateAmount(amount - useCash);
