@@ -10,6 +10,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>토스페이먼츠 샘플 프로젝트</title>
+
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 <body>
 <div class="result wrapper">
@@ -40,14 +43,18 @@
             amount: urlParams.get("amount"),
         };
 
+        /*// $ 는 제이쿼리 문법인데 제이쿼리가 없어서 에러가 난다.
         const csrfTokenHeaderName = $("meta[name='_csrf_header']").attr("content");
-        const csfTokenValue = $("meta[name='_csrf']").attr("content");
+        const csrfTokenValue = $("meta[name='_csrf']").attr("content");*/
+        // 제이쿼리 없는 문법으로
+        const csrfTokenHeaderName = document.querySelector("meta[name='_csrf_header']").getAttribute("content");
+        const csrfTokenValue = document.querySelector("meta[name='_csrf']").getAttribute("content");
 
         const response = await fetch("/order/confirm", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                [csrfTokenHeaderName]: csfTokenValue
+                [csrfTokenHeaderName]: csrfTokenValue
             },
             body: JSON.stringify(requestData),
         });

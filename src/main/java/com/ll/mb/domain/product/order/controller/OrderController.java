@@ -71,15 +71,8 @@ public class OrderController {
         return "domain/product/order/fail";
     }
 
-    // 어디서 에러가 나는지 확인용
-    @GetMapping("/confirm")
-    @ResponseBody
-    public String showConfirm() {
-        return "안녕";
-    }
-
     // 마지막으로 물어보는 엔드 포인트
-    @PostMapping("/confirm2")
+    @PostMapping("/confirm")
     public ResponseEntity<JSONObject> confirmPayment2(@RequestBody String jsonBody) throws Exception {
 
         JSONParser parser = new JSONParser();
@@ -133,7 +126,7 @@ public class OrderController {
 
         // 결제 승인이 완료
         if (isSuccess) {
-            orderService.payDone(orderId);
+            orderService.payByTossPayments(orderService.findByCode(orderId).get(), Long.parseLong(amount));
         } else {
             throw new RuntimeException("결제 승인 실패");
         }

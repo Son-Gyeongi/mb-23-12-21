@@ -2,6 +2,7 @@ package com.ll.mb.domain.product.order.entity;
 
 import com.ll.mb.domain.member.member.entity.Member;
 import com.ll.mb.domain.product.cart.entity.CartItem;
+import com.ll.mb.global.app.AppConfig;
 import com.ll.mb.global.exception.GlobalException;
 import com.ll.mb.global.jpa.BaseEntity;
 import jakarta.persistence.*;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Builder
@@ -86,7 +88,9 @@ public class Order extends BaseEntity { // 주문 1개
         // yyyy-MM-dd 형식의 DateTimeFormatter 생성
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        // LocalDateTime 객체를 문자열로 변환
-        return getCreateDate().format(formatter) + "__" + getId();
+        // LocalDateTime 객체를 문자열로 변환, 주문코드가 주문시도 마다 유니크 하게 생성
+        return getCreateDate().format(formatter)
+                + (AppConfig.isNotProd() ? "-test-" + UUID.randomUUID().toString() : "")
+                + "__" + getId();
     }
 }

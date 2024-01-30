@@ -12,6 +12,21 @@ import org.springframework.context.annotation.Configuration;
 public class AppConfig {
     // AppConfig 클래스는 Spring의 설정을 담당하는 클래스
 
+    private static String activeProfile;
+
+    @Value("${spring.profiles.active}")
+    public void setActiveProfile(String value) {
+        activeProfile = value;
+    }
+
+    public static boolean isNotProd() {
+        return !isProd();
+    }
+
+    public static boolean isProd() {
+        return activeProfile.equals("prod");
+    }
+
     @Getter
     private static String siteName;
 

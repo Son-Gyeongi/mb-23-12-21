@@ -142,7 +142,7 @@ public class OrderService {
         return order.getBuyer().equals(actor);
     }
 
-    private Optional<Order> findByCode(String code) { // code : 2024-01-29__4
+    public Optional<Order> findByCode(String code) { // code : 2024-01-29__4
         long id = Long.parseLong(code.split("__", 2)[1]);
 
         return findById(id);
