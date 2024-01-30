@@ -111,6 +111,7 @@ public class OrderController {
         // 결제 승인 API를 호출하세요.
         // 결제를 승인하면 결제수단에서 금액이 차감돼요.
         // @docs https://docs.tosspayments.com/guides/payment-widget/integration#3-결제-승인하기
+        // 정보를 모아서 실제로 토스API한테 전송
         URL url = new URL("https://api.tosspayments.com/v1/payments/confirm");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestProperty("Authorization", authorizations);

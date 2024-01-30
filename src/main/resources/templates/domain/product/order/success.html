@@ -54,7 +54,11 @@
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                // 스프링 시큐리티 - 기본적으로 모든 POST 요청에 CSRF 토큰 요구
                 [csrfTokenHeaderName]: csrfTokenValue
+                // "X-CSRF-TOKEN" : csrfTokenValue
+                // 키값에 [] 괄호를 하는 이유는 그냥 변수가 아닌 치환되는 값이 들어가야해서 쓴거다.
+                // csrfTokenHeaderName: csrfTokenValue -> "csrfTokenHeaderName": csrfTokenValue
             },
             body: JSON.stringify(requestData),
         });
