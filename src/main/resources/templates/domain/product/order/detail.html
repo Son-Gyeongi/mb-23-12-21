@@ -6,6 +6,7 @@
     <script src="https://js.tosspayments.com/v1/payment-widget"></script>
 
     <script th:inline="javascript">
+        const actorRestCash = /*[[ ${actorRestCash} ]]*/ null; // 사용자가 쓸 수 있는 돈
         // orderCode는 6자 이상이어야 한다.
         const orderCode = /*[[ ${order.code} ]]*/ null;
         const buyerUsername = /*[[ ${order.buyer.username} ]]*/ null;
@@ -43,7 +44,7 @@
         <div id="agreement"></div>
 
         <!-- 결제하기 버튼 -->
-        <form onsubmit="submitPayForm(this); return false;">
+        <form method="POST" th:action="|/order/${order.id}/payByCash|" onsubmit="submitPayForm(this); return false;">
             <!--        현재 DB에 고객의 이메일, 이름(실명), 휴대전화가 없어서 받는다. -->
             <div>
                 <label>고객 이메일</label>
@@ -64,7 +65,13 @@
 
             <div>
                 <label>캐시</label>
-                <input type="number" name="useCash" placeholder="0 ~ ?" class="input input-bordered">
+<!--                결제해야 할 금액(order.calcPayPrice)보다 예치금(actorRestCash)이 적다면 -->
+                <input type="number" name="useCash"
+                       th:max-cash="${order.calcPayPrice > actorRestCash ? actorRestCash : order.calcPayPrice}"
+                       th:placeholder="${'0 ~ ' + (order.calcPayPrice > actorRestCash ? actorRestCash : order.calcPayPrice)}" class="input input-bordered">
+                <button type="button" onclick="$(this).prev().val($(this).prev().attr('max-cash'))">전액</button>
+<!--                전액 버튼을 클릭했을 때(onclick) 나자신(this, button) 전(prev()) 엘리먼트(intput)의  속성(max-cash)의 값을
+                    나자신(this, button) 전(prev())의 val(값)으로 넣겠다.-->
             </div>
 
             <div>
@@ -101,7 +108,13 @@
             // @docs https://docs.tosspayments.com/reference/widget-sdk#renderagreement선택자-옵션
             paymentWidget.renderAgreement("#agreement", {variantKey: "AGREEMENT"});
 
+            // form 발송이 여러번 되는 걸 막기위해서
+            let submitPayFormDone = false;
+
             function submitPayForm(form) {
+                // 이미 발송이 되었으면 function 종료
+                if (submitPayFormDone) return;
+
                 form.customerEmail.value = form.customerEmail.value.trim();
 
                 if (form.customerEmail.value.length == 0) {
@@ -135,6 +148,15 @@
                 // 올바른 값이 들어오면 form.useCash.valueAsNumber, 올바르지 않은 값(NaN)이 들어오면 0이 쓰인다.
                 const useCash = form.useCash.valueAsNumber || 0; // 캐시(예치금)
                 // const useCash = form.useCash.valueAsNumber || 0; // || 비슷한 표현으로 ?? 도 있다.
+
+                // 결제 금액 - 캐시(예치금)
+                if (amount - useCash === 0) {
+                    // 예치금으로 다 결제하면 바로 form에서 전송
+                    form.submit();
+                    // form 발송이 되었다면 submitPayFormDone는 true로 해서 form이 2번 발송되는 걸 막는다.
+                    submitPayFormDone = true;
+                    return;
+                }
 
                 // 예치금 사용한다고 토스페이먼츠에게 알려준다. 총 결제 금액 - 캐시
                 paymentMethodWidget.updateAmount(amount - useCash);

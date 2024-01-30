@@ -115,7 +115,7 @@ public class NotProd {
 
         // 주문 상세페이지는 구매자만 볼 수 있습니다.
         // memberUser4 캐시(예치금) 충전
-        memberService.addCash(memberUser4, 50_000, CashLog.EventType.충전__무통장입금, memberUser4);
+        memberService.addCash(memberUser4, 150_000, CashLog.EventType.충전__무통장입금, memberUser4);
         // 장바구니
         cartService.addItem(memberUser4, product1); // memberUser4이 product1을 장바구니에 담았다.
         cartService.addItem(memberUser4, product2);
