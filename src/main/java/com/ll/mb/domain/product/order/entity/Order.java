@@ -88,7 +88,8 @@ public class Order extends BaseEntity { // 주문 1개
         // yyyy-MM-dd 형식의 DateTimeFormatter 생성
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        // LocalDateTime 객체를 문자열로 변환, 주문코드가 주문시도 마다 유니크 하게 생성
+        // LocalDateTime 객체를 문자열로 변환
+        // 테스트 모드, 개발 모드일 때 주문코드가 주문시도 마다 유니크 하게 생성
         return getCreateDate().format(formatter)
                 + (AppConfig.isNotProd() ? "-test-" + UUID.randomUUID().toString() : "")
                 + "__" + getId();
