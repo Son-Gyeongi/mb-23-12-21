@@ -65,13 +65,14 @@
 
             <div>
                 <label>캐시</label>
-<!--                결제해야 할 금액(order.calcPayPrice)보다 예치금(actorRestCash)이 적다면 -->
+                <!--                결제해야 할 금액(order.calcPayPrice)보다 예치금(actorRestCash)이 적다면 -->
                 <input type="number" name="useCash"
                        th:max-cash="${order.calcPayPrice > actorRestCash ? actorRestCash : order.calcPayPrice}"
-                       th:placeholder="${'0 ~ ' + (order.calcPayPrice > actorRestCash ? actorRestCash : order.calcPayPrice)}" class="input input-bordered">
+                       th:placeholder="${'0 ~ ' + (order.calcPayPrice > actorRestCash ? actorRestCash : order.calcPayPrice)}"
+                       class="input input-bordered">
                 <button type="button" onclick="$(this).prev().val($(this).prev().attr('max-cash'))">전액</button>
-<!--                전액 버튼을 클릭했을 때(onclick) 나자신(this, button) 전(prev()) 엘리먼트(intput)의  속성(max-cash)의 값을
-                    나자신(this, button) 전(prev())의 val(값)으로 넣겠다.-->
+                <!--                전액 버튼을 클릭했을 때(onclick) 나자신(this, button) 전(prev()) 엘리먼트(intput)의  속성(max-cash)의 값을
+                                    나자신(this, button) 전(prev())의 val(값)으로 넣겠다.-->
             </div>
 
             <div>
