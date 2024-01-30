@@ -108,12 +108,15 @@ public class OrderService {
         order.setRefundDone();
     }
 
-    public boolean checkPayPrice(Order order, int payPrice) {
-        if (order.calcPayPrice() != payPrice) {
-            throw new GlobalException("400-2", "결제금액이 일치하지 않습니다.");
-        }
+    // 주문자의 결제캐시랑 클라이언트측에서 준 결제캐시랑 같은지 확인
+    public void checkCanPay(String orderCode, long pgPayPrice) {
+        // 주문 찾기
+        Order order = findByCode(orderCode).orElse(null);
 
-        return true;
+        if (order == null)
+            throw new GlobalException("400-1", "존재하지 않는 주문입니다.");
+
+        checkCanPay(order, pgPayPrice);
     }
 
     // 돈을 지불할 수 있는지 체크하겠다.
@@ -137,5 +140,20 @@ public class OrderService {
     // 주문 상세페이지는 구매자만 볼 수 있습니다.
     public boolean actorCanSee(Member actor, Order order) {
         return order.getBuyer().equals(actor);
+    }
+
+    private Optional<Order> findByCode(String code) { // code : 2024-01-29__4
+        long id = Long.parseLong(code.split("__", 2)[1]);
+
+        return findById(id);
+    }
+
+    public void payDone(String code) {
+        Order order = findByCode(code).orElse(null);
+
+        if (order == null)
+            throw new GlobalException("400-1", "존재하지 않는 주문입니다.");
+
+        payDone(order);
     }
 }

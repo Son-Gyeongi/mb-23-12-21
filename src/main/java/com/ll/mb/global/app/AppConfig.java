@@ -44,4 +44,12 @@ public class AppConfig {
     public void setGenFileDirPath(String genFileDirPath) {
         this.genFileDirPath = genFileDirPath;
     }
+
+    @Getter
+    private static String tossPaymentsWidgetSecretKey;
+
+    @Value("${custom.tossPayments.widget.secretKey}")
+    public void setTossPaymentsWidgetSecretKey(String tossPaymentsWidgetSecretKey) {
+        this.tossPaymentsWidgetSecretKey = tossPaymentsWidgetSecretKey;
+    }
 }
