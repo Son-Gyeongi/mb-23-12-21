@@ -33,7 +33,7 @@
         <div>환불상태: [[${order.refundDate}]]</div>
     </div>
 
-<!--    order.isPayable 함수를 둬서 결제가 가능한 상황인 경우에만 결제폼 노출-->
+    <!--    order.isPayable 함수를 둬서 결제가 가능한 상황인 경우에만 결제폼 노출-->
     <th:block th:if="${order.payable}">
 
         <!-- 결제 UI -->
