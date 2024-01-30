@@ -126,6 +126,9 @@ public class OrderService {
     }
 
     public boolean canPay(Order order, long pgPayPrice) { // pgPayPrice : 토스페이먼츠로 결제되는 금액. pg(paygate)
+        // canPay 메서드에 order.isPayable 를 추가해서 서버사이드에서도 올바르지 않은 결제요청을 막는다.
+        if (!order.isPayable()) return false; // 결제일, 취소일이 null이 아닌 경우 이미 주문을 했다.
+
         long restCash = order.getBuyer().getRestCash();
 
         // 내가 가지고 있는 캐시(restCash)와 토스페이먼츠를 합했을 때(pgPayPrice)
