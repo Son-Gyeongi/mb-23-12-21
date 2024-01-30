@@ -1,7 +1,7 @@
 package com.ll.mb.global.initData;
 
 import com.ll.mb.domain.book.book.service.BookService;
-import com.ll.mb.domain.book.entity.Book;
+import com.ll.mb.domain.book.book.entity.Book;
 import com.ll.mb.domain.cash.cash.entity.CashLog;
 import com.ll.mb.domain.member.member.entity.Member;
 import com.ll.mb.domain.member.member.service.MemberService;

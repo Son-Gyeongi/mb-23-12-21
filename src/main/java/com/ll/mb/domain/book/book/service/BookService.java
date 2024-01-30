@@ -1,7 +1,7 @@
 package com.ll.mb.domain.book.book.service;
 
 import com.ll.mb.domain.book.book.repository.BookRepository;
-import com.ll.mb.domain.book.entity.Book;
+import com.ll.mb.domain.book.book.entity.Book;
 import com.ll.mb.domain.member.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

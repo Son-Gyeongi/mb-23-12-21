@@ -1,4 +1,4 @@
-package com.ll.mb.domain.book.entity;
+package com.ll.mb.domain.book.book.entity;
 
 import com.ll.mb.domain.member.member.entity.Member;
 import com.ll.mb.domain.product.product.entity.Product;

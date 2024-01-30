@@ -1,6 +1,6 @@
 package com.ll.mb.domain.product.product.service;
 
-import com.ll.mb.domain.book.entity.Book;
+import com.ll.mb.domain.book.book.entity.Book;
 import com.ll.mb.domain.product.product.entity.Product;
 import com.ll.mb.domain.product.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;

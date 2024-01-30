@@ -1,6 +1,6 @@
 package com.ll.mb.domain.member.myBook.entity;
 
-import com.ll.mb.domain.book.entity.Book;
+import com.ll.mb.domain.book.book.entity.Book;
 import com.ll.mb.domain.member.member.entity.Member;
 import com.ll.mb.global.jpa.BaseEntity;
 import jakarta.persistence.Entity;

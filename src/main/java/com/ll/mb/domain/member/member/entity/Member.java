@@ -1,6 +1,6 @@
 package com.ll.mb.domain.member.member.entity;
 
-import com.ll.mb.domain.book.entity.Book;
+import com.ll.mb.domain.book.book.entity.Book;
 import com.ll.mb.domain.member.myBook.entity.MyBook;
 import com.ll.mb.domain.product.product.entity.Product;
 import com.ll.mb.global.jpa.BaseEntity;
