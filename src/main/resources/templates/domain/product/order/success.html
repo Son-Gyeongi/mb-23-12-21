@@ -68,11 +68,14 @@
         if (!response.ok) {
             // TODO: 결제 실패 비즈니스 로직을 구현하세요.
             console.log(json);
-            window.location.href = `/order/fail?message=${json.message}&code=${json.code}`;
+            // location.replace : 다른 페이지에서 뒤로가기를 눌렀을 때 해당 페이지로 다시 접근이 안된다.
+            location.replace(`/order/fail?message=${json.message}&code=${json.code}`);
+            return;
         }
 
         // TODO: 결제 성공 비즈니스 로직을 구현하세요.
-        console.log(json);
+        const id = urlParams.get("orderId").split("__")[1];
+        location.replace(`/order/${id}?msg=결제가 완료되었습니다.`);
     }
 
     confirm();
