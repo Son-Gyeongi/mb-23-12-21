@@ -30,119 +30,125 @@
         <div>결제금액: [[${order.calcPayPrice}]]</div>
     </div>
 
-    <!-- 결제 UI -->
-    <div id="payment-method"></div>
+<!--    order.isPayable 함수를 둬서 결제가 가능한 상황인 경우에만 결제폼 노출-->
+    <th:block th:if="${order.payable}">
 
-    <!-- 이용약관 UI -->
-    <div id="agreement"></div>
+        <!-- 결제 UI -->
+        <div id="payment-method"></div>
 
-    <!-- 결제하기 버튼 -->
-    <form onsubmit="submitPayForm(this); return false;">
-<!--        현재 DB에 고객의 이메일, 이름(실명), 휴대전화가 없어서 받는다. -->
-        <div>
-            <label>고객 이메일</label>
-            <input type="email" name="customerEmail" placeholder="customer@email.com" class="input input-bordered" value="test@test.com">
-        </div>
+        <!-- 이용약관 UI -->
+        <div id="agreement"></div>
 
-        <div>
-            <label>고객 이름(실명)</label>
-            <input type="text" name="customerName" placeholder="홍길동" class="input input-bordered" value="홍길동">
-        </div>
+        <!-- 결제하기 버튼 -->
+        <form onsubmit="submitPayForm(this); return false;">
+            <!--        현재 DB에 고객의 이메일, 이름(실명), 휴대전화가 없어서 받는다. -->
+            <div>
+                <label>고객 이메일</label>
+                <input type="email" name="customerEmail" placeholder="customer@email.com" class="input input-bordered"
+                       value="test@test.com">
+            </div>
 
-        <div>
-            <label>고객 휴대전화번호(- 제외)</label>
-            <input type="text" name="customerMobilePhone" placeholder="01012341234" class="input input-bordered" value="01012341234">
-        </div>
+            <div>
+                <label>고객 이름(실명)</label>
+                <input type="text" name="customerName" placeholder="홍길동" class="input input-bordered" value="홍길동">
+            </div>
 
-        <div>
-            <label>캐시</label>
-            <input type="number" name="useCash" placeholder="0 ~ ?" class="input input-bordered">
-        </div>
+            <div>
+                <label>고객 휴대전화번호(- 제외)</label>
+                <input type="text" name="customerMobilePhone" placeholder="01012341234" class="input input-bordered"
+                       value="01012341234">
+            </div>
 
-        <div>
-            <label>결제하기</label>
-<!--            버튼이 submit 이어야 form이 발송된다.-->
-            <button type="submit" id="payment-button" class="btn btn-primary">결제하기</button>
-        </div>
-    </form>
+            <div>
+                <label>캐시</label>
+                <input type="number" name="useCash" placeholder="0 ~ ?" class="input input-bordered">
+            </div>
 
-    <script>
-        const button = document.getElementById("payment-button");
-        const coupon = document.getElementById("coupon-box");
-        const generateRandomString = () =>
-            window.btoa(Math.random()).slice(0, 20);
+            <div>
+                <label>결제하기</label>
+                <!--            버튼이 submit 이어야 form이 발송된다.-->
+                <button type="submit" id="payment-button" class="btn btn-primary">결제하기</button>
+            </div>
+        </form>
 
-        var amount = orderPayPrice; // amount 결제금액
+        <script>
+            const button = document.getElementById("payment-button");
+            const coupon = document.getElementById("coupon-box");
+            const generateRandomString = () =>
+                window.btoa(Math.random()).slice(0, 20);
 
-        const clientKey = toss_clientKey;
-        const customerKey = buyerUsername;
-        const paymentWidget = PaymentWidget(clientKey, customerKey); // 회원 결제
-        // const paymentWidget = PaymentWidget(clientKey, PaymentWidget.ANONYMOUS); // 비회원 결제
+            var amount = orderPayPrice; // amount 결제금액
 
-        // ------  결제 UI 렌더링 ------
-        // @docs https://docs.tosspayments.com/reference/widget-sdk#renderpaymentmethods선택자-결제-금액-옵션
-        paymentMethodWidget = paymentWidget.renderPaymentMethods(
-            "#payment-method",
-            {value: amount},
-            // 렌더링하고 싶은 결제 UI의 variantKey
-            // 결제 수단 및 스타일이 다른 멀티 UI를 직접 만들고 싶다면 계약이 필요해요.
-            // @docs https://docs.tosspayments.com/guides/payment-widget/admin#멀티-결제-ui
-            {variantKey: "DEFAULT"}
-        );
-        // ------  이용약관 UI 렌더링 ------
-        // @docs https://docs.tosspayments.com/reference/widget-sdk#renderagreement선택자-옵션
-        paymentWidget.renderAgreement("#agreement", {variantKey: "AGREEMENT"});
+            const clientKey = toss_clientKey;
+            const customerKey = buyerUsername;
+            const paymentWidget = PaymentWidget(clientKey, customerKey); // 회원 결제
+            // const paymentWidget = PaymentWidget(clientKey, PaymentWidget.ANONYMOUS); // 비회원 결제
 
-        function submitPayForm(form) {
-            form.customerEmail.value = form.customerEmail.value.trim();
+            // ------  결제 UI 렌더링 ------
+            // @docs https://docs.tosspayments.com/reference/widget-sdk#renderpaymentmethods선택자-결제-금액-옵션
+            paymentMethodWidget = paymentWidget.renderPaymentMethods(
+                "#payment-method",
+                {value: amount},
+                // 렌더링하고 싶은 결제 UI의 variantKey
+                // 결제 수단 및 스타일이 다른 멀티 UI를 직접 만들고 싶다면 계약이 필요해요.
+                // @docs https://docs.tosspayments.com/guides/payment-widget/admin#멀티-결제-ui
+                {variantKey: "DEFAULT"}
+            );
+            // ------  이용약관 UI 렌더링 ------
+            // @docs https://docs.tosspayments.com/reference/widget-sdk#renderagreement선택자-옵션
+            paymentWidget.renderAgreement("#agreement", {variantKey: "AGREEMENT"});
 
-            if ( form.customerEmail.value.length == 0 ) {
-                toastWarning("고객 이메일을 입력해주세요.");
-                form.customerEmail.focus();
+            function submitPayForm(form) {
+                form.customerEmail.value = form.customerEmail.value.trim();
 
-                return;
+                if (form.customerEmail.value.length == 0) {
+                    toastWarning("고객 이메일을 입력해주세요.");
+                    form.customerEmail.focus();
+
+                    return;
+                }
+
+                form.customerName.value = form.customerName.value.trim();
+
+                if (form.customerName.value.length == 0) {
+                    toastWarning("고객 이름(실명)을 입력해주세요.");
+                    form.customerName.focus();
+
+                    return;
+                }
+
+                form.customerMobilePhone.value = form.customerMobilePhone.value.trim();
+
+                if (form.customerMobilePhone.value.length == 0) {
+                    toastWarning("고객 휴대전화번호를 입력해주세요.");
+                    form.customerMobilePhone.focus();
+
+                    return;
+                }
+
+                form.useCash.value = form.useCash.value.trim();
+
+                // valueAsNumber : 자바의 parseInt 하는 거랑 같다, 문자를 숫자로 바꾼다.
+                // 올바른 값이 들어오면 form.useCash.valueAsNumber, 올바르지 않은 값(NaN)이 들어오면 0이 쓰인다.
+                const useCash = form.useCash.valueAsNumber || 0; // 캐시(예치금)
+                // const useCash = form.useCash.valueAsNumber || 0; // || 비슷한 표현으로 ?? 도 있다.
+
+                // 예치금 사용한다고 토스페이먼츠에게 알려준다. 총 결제 금액 - 캐시
+                paymentMethodWidget.updateAmount(amount - useCash);
+
+                paymentWidget.requestPayment({
+                    orderId: orderCode,
+                    orderName: orderName,
+                    // window.location.origin은 현재 문서의 URL의 원본(Origin)을 나타내는 JavaScript의 프로퍼티
+                    successUrl: window.location.origin + "/order/success",
+                    failUrl: window.location.origin + "/order/fail",
+                    customerEmail: form.customerEmail.value,
+                    customerName: form.customerName.value,
+                    customerMobilePhone: form.customerMobilePhone.value,
+                });
             }
-
-            form.customerName.value = form.customerName.value.trim();
-
-            if ( form.customerName.value.length == 0 ) {
-                toastWarning("고객 이름(실명)을 입력해주세요.");
-                form.customerName.focus();
-
-                return;
-            }
-
-            form.customerMobilePhone.value = form.customerMobilePhone.value.trim();
-
-            if ( form.customerMobilePhone.value.length == 0 ) {
-                toastWarning("고객 휴대전화번호를 입력해주세요.");
-                form.customerMobilePhone.focus();
-
-                return;
-            }
-
-            form.useCash.value = form.useCash.value.trim();
-
-            // valueAsNumber : 자바의 parseInt 하는 거랑 같다, 문자를 숫자로 바꾼다.
-            // 올바른 값이 들어오면 form.useCash.valueAsNumber, 올바르지 않은 값(NaN)이 들어오면 0이 쓰인다.
-            const useCash = form.useCash.valueAsNumber || 0; // 캐시(예치금)
-            // const useCash = form.useCash.valueAsNumber || 0; // || 비슷한 표현으로 ?? 도 있다.
-
-            // 예치금 사용한다고 토스페이먼츠에게 알려준다. 총 결제 금액 - 캐시
-            paymentMethodWidget.updateAmount(amount - useCash);
-
-            paymentWidget.requestPayment({
-                orderId: orderCode,
-                orderName: orderName,
-                // window.location.origin은 현재 문서의 URL의 원본(Origin)을 나타내는 JavaScript의 프로퍼티
-                successUrl: window.location.origin + "/order/success",
-                failUrl: window.location.origin + "/order/fail",
-                customerEmail: form.customerEmail.value,
-                customerName: form.customerName.value,
-                customerMobilePhone: form.customerMobilePhone.value,
-            });
-        }
-    </script>
+        </script>
+    </th:block>
 </div>
 
 </body>
