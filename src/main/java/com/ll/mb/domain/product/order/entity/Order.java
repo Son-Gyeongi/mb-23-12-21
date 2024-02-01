@@ -26,9 +26,14 @@ public class Order extends BaseEntity { // 주문 1개
     @ManyToOne
     private Member buyer;
 
-    @Builder.Default
+    @Builder.Default // 빌더(Builder) 패턴을 사용할 때 필드의 기본값을 설정하는 데 사용
+    // 여러 개의 OrderItem 엔티티가 하나의 Order 엔티티에 속한다
+    // mappedBy = "order" OrderItem 엔티티 클래스에서 order라는 이름의 필드를 사용하여 Order 엔티티와 연관
+    // CascadeType.ALL은 Order 엔티티가 저장, 수정, 삭제될 때 연관된 모든 OrderItem 엔티티에도 동일한 작업을 적용한다는 것을 의미
+    // orphanRemoval = true: 이 옵션은 부모 엔티티와 연관이 끊어진 자식 엔티티를 자동으로 삭제하는 옵션
+    // 즉, Order 엔티티에서 제거된 OrderItem 엔티티는 데이터베이스에서도 삭제
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderItem> orderItems = new ArrayList<>();
+    private List<OrderItem> orderItems = new ArrayList<>(); // Order 엔티티에는 OrderItem 엔티티를 여러 개 가질 수 있음
 
     private LocalDateTime payDate; // 결제일, null이면 결제하지 않은거다.
     private LocalDateTime cancelDate; // 취소일

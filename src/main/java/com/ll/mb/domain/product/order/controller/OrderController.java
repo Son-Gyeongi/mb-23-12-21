@@ -91,7 +91,7 @@ public class OrderController {
 
     // 마지막으로 물어보는 엔드 포인트
     @PostMapping("/confirm")
-    public ResponseEntity<JSONObject> confirmPayment2(@RequestBody String jsonBody) throws Exception {
+    public ResponseEntity<JSONObject> confirmPayment(@RequestBody String jsonBody) throws Exception {
 
         JSONParser parser = new JSONParser();
         String orderId;
